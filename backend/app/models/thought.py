@@ -1,7 +1,9 @@
 import uuid
 import datetime
 
-from sqlalchemy import Column, String, DateTime, JSON, ForeignKey, Integer, Index
+from sqlalchemy import (
+    Column, String, DateTime, JSON, ForeignKey, Integer, Index
+)
 from sqlalchemy.orm import DeclarativeBase, relationship
 
 
@@ -49,7 +51,11 @@ class ThoughtVersion(Base):
     thought = relationship("Thought", back_populates="versions", uselist=False)
 
     __table_args__ = (
-        Index('ix_thought_versions_thought_id_version_number', 'thought_id', 'version_number'),
+        Index(
+            'ix_thought_versions_thought_id_version_number',
+            'thought_id',
+            'version_number'
+        ),
     )
 
 
