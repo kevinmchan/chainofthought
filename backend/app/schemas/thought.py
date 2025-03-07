@@ -6,7 +6,7 @@ from datetime import datetime
 # Base schemas
 class ThoughtVersionBase(BaseModel):
     content: str
-    metadata: dict[str, Any] | None = None
+    annotations: dict[str, Any] | None = None
 
 # Creation schemas
 class ThoughtCreate(ThoughtVersionBase):

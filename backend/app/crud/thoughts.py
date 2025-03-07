@@ -19,7 +19,7 @@ def create_thought(db: Session, thought_data: ThoughtCreate) -> Thought:
         id=version_id,
         thought_id=thought_id,
         content=thought_data.content,
-        metadata=thought_data.annotations,
+        annotations=thought_data.annotations,
         version_number=1
     )
     db.add(db_version)
