@@ -1,14 +1,9 @@
+from typing import Any
 import uuid
 import datetime
 
-from sqlalchemy import (
-    Column, String, DateTime, JSON, ForeignKey, Integer, Index
-)
-from sqlalchemy.orm import DeclarativeBase, relationship
-
-
-class Base(DeclarativeBase):
-    pass
+from sqlmodel import SQLModel, Field, Relationship
+from sqlalchemy import Column, JSON, Index
 
 
 def now() -> datetime.datetime:
@@ -19,37 +14,27 @@ def generate_uuid() -> str:
     return str(uuid.uuid4())
 
 
-class Thought(Base):
-    __tablename__ = 'thoughts'
+class ThoughtBase(SQLModel):
+    """Base model with shared fields"""
+    pass
 
-    id = Column(String, primary_key=True, default=generate_uuid)
-    created_at = Column(DateTime, default=now)
 
-    versions = relationship("ThoughtVersion", back_populates="thought")
-    current_version_association = relationship(
-        "CurrentThoughtVersion",
-        back_populates="thought",
-        uselist=False,
+class ThoughtVersion(SQLModel, table=True):
+    __tablename__: str = "thought_versions"  # type: ignore
+
+    id: str = Field(default_factory=generate_uuid, primary_key=True)
+    thought_id: str = Field(foreign_key="thoughts.id")
+    created_at: datetime.datetime = Field(default_factory=now)
+    content: str
+    version_number: int
+    annotations: dict[str, Any] | None = Field(default=None, sa_column=Column(JSON))
+
+    thought: "Thought" = Relationship(
+        back_populates="versions",
+        sa_relationship_kwargs={"uselist": False},
     )
 
-    @property
-    def current_version(self) -> "ThoughtVersion | None":
-        if self.current_version_association:
-            return self.current_version_association.version
-        return None
-
-class ThoughtVersion(Base):
-    __tablename__ = 'thought_versions'
-
-    id = Column(String, primary_key=True, default=generate_uuid)
-    thought_id = Column(String, ForeignKey('thoughts.id'), nullable=False)
-    created_at = Column(DateTime, default=now)
-    content = Column(String, nullable=False)
-    version_number = Column(Integer, nullable=False)
-    annotations = Column(JSON)
-
-    thought = relationship("Thought", back_populates="versions", uselist=False)
-
+    # Custom index
     __table_args__ = (
         Index(
             'ix_thought_versions_thought_id_version_number',
@@ -59,15 +44,40 @@ class ThoughtVersion(Base):
     )
 
 
-class CurrentThoughtVersion(Base):
-    __tablename__ = 'current_thought_versions'
+class CurrentThoughtVersion(SQLModel, table=True):
+    __tablename__: str = "current_thought_versions"  # type: ignore
 
-    thought_id = Column(String, ForeignKey('thoughts.id'), primary_key=True)
-    version_id = Column(String, ForeignKey('thought_versions.id'), nullable=False)
+    thought_id: str = Field(foreign_key="thoughts.id", primary_key=True)
+    version_id: str = Field(foreign_key="thought_versions.id")
 
-    thought = relationship(
-        "Thought",
+    # Complex relationships that need SQLAlchemy's full API
+    thought: "Thought" = Relationship(
         back_populates="current_version_association",
-        uselist=False,
+        sa_relationship_kwargs={"uselist": False},
     )
-    version = relationship("ThoughtVersion", uselist=False)
+
+    version: "ThoughtVersion" = Relationship(
+        sa_relationship_kwargs={"uselist": False},
+    )
+
+
+class Thought(SQLModel, table=True):
+    __tablename__: str = "thoughts"  # type: ignore
+
+    id: str = Field(default_factory=generate_uuid, primary_key=True)
+    created_at: datetime.datetime = Field(default_factory=now)
+
+    # Relationships 
+    versions: list["ThoughtVersion"] = Relationship(back_populates="thought")
+    
+    current_version_association: "CurrentThoughtVersion | None" = Relationship(
+        back_populates="thought",
+        sa_relationship_kwargs={"uselist": False},
+    )
+
+    @property
+    def current_version(self) -> "ThoughtVersion | None":
+        """Get the current version of this thought"""
+        if self.current_version_association:
+            return self.current_version_association.version
+        return None
