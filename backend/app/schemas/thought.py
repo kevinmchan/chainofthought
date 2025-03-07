@@ -1,12 +1,12 @@
 from pydantic import BaseModel, ConfigDict
-from typing import Optional, Dict, Any
+from typing import Any
 from datetime import datetime
 
 
 # Base schemas
 class ThoughtVersionBase(BaseModel):
     content: str
-    metadata: Optional[Dict[str, Any]] = None
+    metadata: dict[str, Any] | None = None
 
 # Creation schemas
 class ThoughtCreate(ThoughtVersionBase):
