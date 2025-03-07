@@ -32,8 +32,6 @@ def create_thought(db: Session, thought_data: ThoughtCreate) -> Thought:
     db.add(db_current)
     
     db.commit()
-    
-    # Set current_version for response
-    db_thought.current_version = db_version
+    db.refresh(db_thought)
     
     return db_thought
