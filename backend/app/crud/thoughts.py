@@ -35,3 +35,8 @@ def create_thought(db: Session, thought_data: ThoughtCreate) -> Thought:
     db.refresh(db_thought)
     
     return db_thought
+
+
+def read_thought(db: Session, id: str) -> Thought | None:
+    """Read a thought by ID"""
+    return db.get(Thought, id)
