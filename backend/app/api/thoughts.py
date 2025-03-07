@@ -6,7 +6,7 @@ from app.crud.thoughts import create_thought
 from app.db.session import get_db
 
 
-router = APIRouter()
+router = APIRouter(prefix="/thoughts", tags=["thoughts"])
 
 @router.post("/", response_model=ThoughtWithCurrentVersion)
 def create_thought_endpoint(
