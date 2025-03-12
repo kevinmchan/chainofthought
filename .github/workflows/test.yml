@@ -1,0 +1,36 @@
+name: Backend Python Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.6.6"
+          enable-cache: true
+
+      - name: Install environment
+        run: |
+          cd backend
+          uv sync
+          source .venv/bin/activate
+      
+      - name: Run tests
+        run: |
+          cd backend
+          pytest
+      
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./backend/coverage.xml
+          fail_ci_if_error: true
