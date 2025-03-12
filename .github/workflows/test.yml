@@ -22,12 +22,11 @@ jobs:
         run: |
           cd backend
           uv sync
-          source .venv/bin/activate
       
       - name: Run tests
         run: |
           cd backend
-          pytest
+          uv run pytest
       
       - name: Upload coverage report
         uses: codecov/codecov-action@v3
