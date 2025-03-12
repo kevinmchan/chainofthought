@@ -25,3 +25,14 @@ dist-ssr
 
 # Environment variables
 .env
+
+# Python
+*.pyc
+__pycache__
+.pytest_cache
+
+# Database
+*.db
+
+# Testing
+.coverage
