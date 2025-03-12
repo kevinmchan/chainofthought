@@ -10,7 +10,7 @@ def test_create_thought(db_session: Session):
     # create a thought object
     thought = ThoughtCreate(
         content="Test thought content",
-        annotations={"tag": "test"}
+        annotations={"tag": "test-crud"}
     )
     
     # add thought object to the database
@@ -31,7 +31,7 @@ def test_read_thought(db_session: Session):
     # create a thought object
     thought = ThoughtCreate(
         content="Test thought content",
-        annotations={"tag": "test"}
+        annotations={"tag": "test-crud"}
     )
     
     # add thought object to the database
