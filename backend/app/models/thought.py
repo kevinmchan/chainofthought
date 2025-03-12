@@ -56,7 +56,7 @@ class CurrentThoughtVersion(SQLModel, table=True):
         sa_relationship_kwargs={"uselist": False},
     )
 
-    version: "ThoughtVersion" = Relationship(
+    version: ThoughtVersion = Relationship(
         sa_relationship_kwargs={"uselist": False},
     )
 
@@ -68,9 +68,9 @@ class Thought(SQLModel, table=True):
     created_at: datetime.datetime = Field(default_factory=now)
 
     # Relationships 
-    versions: list["ThoughtVersion"] = Relationship(back_populates="thought")
+    versions: list[ThoughtVersion] = Relationship(back_populates="thought")
     
-    current_version_association: "CurrentThoughtVersion | None" = Relationship(
+    current_version_association: CurrentThoughtVersion | None = Relationship(
         back_populates="thought",
         sa_relationship_kwargs={"uselist": False},
     )
