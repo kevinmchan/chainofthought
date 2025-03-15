@@ -1,13 +1,6 @@
-<script setup lang="ts">
-import ThoughtForm from '../components/ThoughtForm.vue';
-
-/* Add setup logic here later */
-</script>
-
 <template>
   <div class="home">
-    <h1>chainofthought</h1>
-    <ThoughtForm />
+    <h1>Welcome!</h1>
   </div>
 </template>
 
