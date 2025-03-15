@@ -6,14 +6,24 @@
       </div>
       <div class="links">
         <router-link to="/" class="nav-link">Home</router-link>
-        <router-link to="/notes" class="nav-link">Notes</router-link>
+        <router-link to="/thoughts" class="nav-link">Thoughts</router-link>
       </div>
     </nav>
-    <router-view />
+    <router-view class="view"/>
   </div>
 </template>
 
 <style scoped>
+.view {
+  height: 100%;
+  margin: 1em 0;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 .navbar {
   display: flex;
   justify-content: space-between;
