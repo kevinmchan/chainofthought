@@ -7,6 +7,8 @@
       <div class="links">
         <router-link to="/" class="nav-link">Home</router-link>
         <router-link to="/thoughts" class="nav-link">Thoughts</router-link>
+        <router-link to="/actions" class="nav-link">Actions</router-link>
+        <router-link to="/progress" class="nav-link">Progress</router-link>
       </div>
     </nav>
     <router-view class="view"/>
