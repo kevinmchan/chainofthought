@@ -8,7 +8,7 @@
         @click="$emit('selectThought', thought)"
         class="thought"
       >
-        {{ thought.title || 'Untitled' }}
+        <a class="thought-link">{{ thought.title || 'Untitled' }}</a>
       </div>
     </div>
   </div>
@@ -31,9 +31,16 @@ defineProps<{
   flex-direction: column;
 }
 
+.thought-link {
+  text-decoration: none;
+  font-weight: normal;
+  font-size: smaller;
+  color: #777;
+}
+
 .thought {
   border: 1px solid gray;
-  margin: 5px;
-  padding: 5px;
+  margin: 0.2em;
+  padding: 0.2em;
 }
 </style>
