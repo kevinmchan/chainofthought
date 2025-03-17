@@ -5,6 +5,7 @@
         <div class="logo">chainofthought</div>
       </div>
       <div class="links">
+        <router-link to="/daily" class="nav-link">Daily</router-link>
         <router-link to="/" class="nav-link">Orientation</router-link>
         <router-link to="/progress" class="nav-link">Progress</router-link>
         <router-link to="/actions" class="nav-link">Actions</router-link>
